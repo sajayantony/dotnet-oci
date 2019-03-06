@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+   
+    <PackAsTool>True</PackAsTool>
+    <ToolCommandName>dotnet-start</ToolCommandName>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <PackageId>dotnet-start</PackageId>
+  </PropertyGroup>
+</Project>
