@@ -28,7 +28,7 @@ export DOCKER_PASSWORD=password
 export REGISTRY=sajayeus.azurecr.io
 cd samples/helloworld
 
-#ORAS needs  PR to push a directory.
+# ORAS needs a PR to push a directory.
 # But for now just push the needed files.
 
 oras push $REGISTRY/hello-world:dotnet  \
@@ -41,7 +41,7 @@ oras push $REGISTRY/hello-world:dotnet  \
 
 ## App cache 
 
-The applications are downloaded to a cache and we can mak this smarter by indexing by a sha256 digest if needed. 
+The applications are downloaded to a cache and we can make this smarter by indexing by a sha256 digest if needed. 
 
 ```
 ❯ tree ~/.dotnet-oras-app/
