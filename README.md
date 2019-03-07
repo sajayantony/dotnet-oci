@@ -1,12 +1,13 @@
 # Dotnet app from OCI registry
 
-
 The goal here is to enable dotnet app distribution using an OCI registry. 
 Dotnet apps can be run directly using the dotnet CLI as follow.
 
 ```
 dotnet start myregistry.azurecr.io/dotnet:app
 ```
+
+[![asciicast](https://asciinema.org/a/ok2FAeq8vCizvreF9L1KvlQsX.svg)](https://asciinema.org/a/ok2FAeq8vCizvreF9L1KvlQsX)
 
 ## Building the project
 
