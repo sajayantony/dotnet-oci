@@ -7,11 +7,11 @@ Dotnet apps can be run directly using the dotnet CLI as follow.
 dotnet start myregistry.azurecr.io/dotnet:app
 ```
 
-[![asciicast](https://asciinema.org/a/ok2FAeq8vCizvreF9L1KvlQsX.svg)](https://asciinema.org/a/ok2FAeq8vCizvreF9L1KvlQsX)
+[![asciicast](https://asciinema.org/a/ok2FAeq8vCizvreF9L1KvlQsX.svg)](https://asciinema.org/a/ok2FAeq8vCizvreF9L1KvlQsX?speed=2&autoplay=1)
 
 ## Building the project
 
-Build and install the tool 
+Build and install the tool.
 
 ```bash
 ## this build the tool and install it into the global tools 
