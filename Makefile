@@ -16,10 +16,6 @@ sample :
 	dotnet publish
 
 push :
-	cd samples/helloworld && \
-	oras push $$REGISTRY/hello-world:dotnet  \
-	./bin/Debug/netcoreapp2.2/publish/helloworld.dll \
-	./bin/Debug/netcoreapp2.2/publish/helloworld.runtimeconfig.json  \
- 	manifest.json \
-	-u $$DOCKER_USERNAME \
-	-p  $$DOCKER_PASSWORD
+	cd samples/helloworld/bin/Debug/netcoreapp2.2/publish && \
+	oras push $$REGISTRY/hello-world:dotnet  . \
+ 	manifest.json 

@@ -34,7 +34,7 @@ namespace DotNet.Oras
             var root = AppStore.Root;
             var appPath = imageReference.Replace(':', '.').Replace('/', '.').ToString();
             var fullPath = Path.Combine(root, appPath);
-            var pullArgs = $"pull {imageReference} " + GetRegistryCredentials();
+            var pullArgs = $"pull {imageReference} " ;
             IoUtils.EnsureDirectory(fullPath);
 
             var psi = new ProcessStartInfo
@@ -50,9 +50,6 @@ namespace DotNet.Oras
             using (var proc = Process.Start(psi))
             {
                 proc.WaitForExit();
-                //Console.WriteLine(proc.StandardError.ReadToEnd());
-                //Console.WriteLine(proc.StandardOutput.ReadToEnd());
-
                 if (proc.ExitCode != 0)
                 {
                     Console.Write($"Error downloading {imageReference}");
@@ -61,19 +58,6 @@ namespace DotNet.Oras
             }
 
             return fullPath;
-        }
-
-
-        // Credentials are obtained from environment variables for now
-        static string GetRegistryCredentials()
-        {
-            var username = System.Environment.GetEnvironmentVariable("DOCKER_USERNAME");
-            var password = System.Environment.GetEnvironmentVariable("DOCKER_PASSWORD");
-            if (!string.IsNullOrEmpty(username) || !string.IsNullOrEmpty(password))
-            {
-                return $"-u \"{username}\" -p \"{password}\" ";
-            }
-            return string.Empty;
         }
 
         static int RunApp(string path)
