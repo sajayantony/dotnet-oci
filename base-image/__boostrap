@@ -1,0 +1,19 @@
+#!/bin/sh
+export BOOTSTRAP_FILE_NAME=$(ls *.runtimeconfig.json | \
+    sed -e 's/.runtimeconfig.json//')
+
+if [ -z "$BOOTSTRAP_FILE_NAME" ]
+    then
+        echo ERR: Unabled to find app entrypoint
+        exit 1
+fi
+
+export BOOTSTRAP_FILE_PATH="$BOOTSTRAP_FILE_NAME.dll"
+
+if [ ! -f "$BOOTSTRAP_FILE_PATH" ]; then
+    echo "ERR: Unable to find $BOOTSTRAP_FILE_PATH"
+    exit 1
+fi
+
+#Invoke the app
+dotnet $BOOTSTRAP_FILE_PATH
