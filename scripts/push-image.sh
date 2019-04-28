@@ -59,12 +59,12 @@ cd $TEMP_DIR
 
 # Get app manifest
 curl $CURL_USER_ARGS -sH "Accept: application/vnd.oci.image.manifest.v1+json" \
-        "https://$REGISTRY/v2/$repo/manifests/$oras_manifest_digest" > app_manifest.json
+        "https://$REGISTRY/v2/$repo/manifests/$oras_manifest_digest" > oras_manifest.json
 
 
-app_diff_id=$(cat app_manifest.json | jq -r '.layers[0].annotations["io.deis.oras.content.digest"]')
-app_size=$(cat app_manifest.json | jq -r '.layers[0].size')
-app_digest=$(cat app_manifest.json | jq -r '.layers[0].digest')
+app_diff_id=$(cat oras_manifest.json | jq -r '.layers[0].annotations["io.deis.oras.content.digest"]')
+app_size=$(cat oras_manifest.json | jq -r '.layers[0].size')
+app_digest=$(cat oras_manifest.json | jq -r '.layers[0].digest')
 
 ##
 # Demo Main Part: no docker required
