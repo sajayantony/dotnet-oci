@@ -1,20 +1,21 @@
 #!/bin/bash
 
-set -ex
+set -e
+set -u
 
-if [ -z "$REGISTRY" ] 
+if [ -z "$REGISTRY" ]
     then
         echo ERROR: Environment variable REGISTRY not defined
         exit 1
 fi
 
-if [ -z "$DOCKER_USERNAME"]
+if [ -z "$DOCKER_USERNAME" ]
   then 
         echo ERROR: DOCKER_USERNAME not defined. 
         exit 1
 fi
 
-if [ -z "$DOCKER_PASSWORD"]
+if [ -z "$DOCKER_PASSWORD" ]
   then 
         echo ERROR: DOCKER_PASSWORD not defined. 
         exit 1
@@ -24,12 +25,17 @@ while getopts "p:" OPTION; do
   case $OPTION in
     p )
       APP_DIR=$OPTARG
+      ;;
+    ? ) 
+      echo "Usage: push-image.sh -p <PATH>" >&2
+      exit 1
   esac
 done
 shift "$(($OPTIND -1))"
 
 repo="dotnet-oci-preview-3"
 DOCKER_IMAGE_TAG="hello-world-app"
+NATIVE_APP_TAG="app"
 CURL_USER_ARGS="--user $DOCKER_USERNAME:$DOCKER_PASSWORD"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
@@ -47,21 +53,25 @@ fi
 # OSX doesn't have sha256sum so alias it i
 # stat is -f instead of -c for OSX
 
-tar -cf app.tar . 
+echo Pushing app: $REGISTRY/$repo:app
+oras push $REGISTRY/$repo:$NATIVE_APP_TAG .
+
+tar -cvf app.tar * 
 mkdir $TEMP_DIR
 mv app.tar  $TEMP_DIR
 cd $TEMP_DIR
 
+
 app_diff_id="sha256:$(shasum -a 256  app.tar | cut -d " " -f1)"
 gzip app.tar
-oras push $REGISTRY/$repo:app app.tar.gz
+#oras push $REGISTRY/$repo:TAR_$NATIVE_APP_TAG  app.tar.gz
 app_size=$(stat -f%p app.tar.gz)
 app_digest="sha256:$(shasum -a 256  app.tar.gz | cut -d " " -f1)"
 
 ##
 # Demo Main Part: no docker required
 ##
-
+echo "Build Image using: $REGISTRY/$repo:base"
 # Get base manifest and config
 curl $CURL_USER_ARGS  -sH "Accept: application/vnd.docker.distribution.manifest.v2+json" \
         "https://$REGISTRY/v2/$repo/manifests/base" > base_manifest.json
@@ -81,6 +91,7 @@ cat base_manifest.json |
     > app_manifest.json
 
 # Upload config file
+echo "Pushing image: $REGISTRY/$repo/$DOCKER_IMAGE_TAG"
 upload_url=$(curl $CURL_USER_ARGS -sIXPOST "https://$REGISTRY/v2/$repo/blobs/uploads/" | grep "Location: " | cut -d " " -f2 | tr -d "\r")
 curl $CURL_USER_ARGS  --upload-file app_config.json "https://$REGISTRY$upload_url&digest=$app_config_digest"
 
@@ -89,13 +100,17 @@ curl $CURL_USER_ARGS -XPUT -d @app_manifest.json \
         -H "Content-Type: application/vnd.docker.distribution.manifest.v2+json" \
         "https://$REGISTRY/v2/$repo/manifests/$DOCKER_IMAGE_TAG"
 
-#clean up 
-rm -rf $TEMP_DIR
+#clean up
+cd .. 
+#rm -rf $TEMP_DIR
 
 ##
 # End Of Demo Main Part
 ##
 
 # Pull and run the merged image
-docker pull $REGISTRY/$repo:$DOCKER_IMAGE_TAG 
-docker run --rm -it $REGISTRY/$repo:$DOCKER_IMAGE_TAG 
+echo "Commands"
+echo "--------"
+echo "Native APP  : dotnet start $REGISTRY/$repo:$NATIVE_APP_TAG" 
+echo "Docker Image: docker run --rm -it $REGISTRY/$repo:$DOCKER_IMAGE_TAG" 
+
