@@ -102,7 +102,7 @@ curl $CURL_USER_ARGS -XPUT -d @app_manifest.json \
 
 #clean up
 cd .. 
-#rm -rf $TEMP_DIR
+rm -rf $TEMP_DIR
 
 ##
 # End Of Demo Main Part
