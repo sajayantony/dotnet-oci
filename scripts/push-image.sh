@@ -48,25 +48,23 @@ if [ -d "$TEMP_DIR" ]
 fi
 
 # Prepare app: no docker required
-
-#tar -cf app.tar --owner=0 --group=0 .
 # OSX doesn't have sha256sum so alias it i
 # stat is -f instead of -c for OSX
 
 echo Pushing app: $REGISTRY/$repo:app
-oras push $REGISTRY/$repo:$NATIVE_APP_TAG .
+oras_manifest_digest=$(oras push $REGISTRY/$repo:$NATIVE_APP_TAG . | sed -n 's/.*\(sha256:.*\)/\1/p')
 
-tar -cvf app.tar * 
 mkdir $TEMP_DIR
-mv app.tar  $TEMP_DIR
 cd $TEMP_DIR
 
+# Get app manifest
+curl $CURL_USER_ARGS -sH "Accept: application/vnd.oci.image.manifest.v1+json" \
+        "https://$REGISTRY/v2/$repo/manifests/$oras_manifest_digest" > app_manifest.json
 
-app_diff_id="sha256:$(shasum -a 256  app.tar | cut -d " " -f1)"
-gzip app.tar
-#oras push $REGISTRY/$repo:TAR_$NATIVE_APP_TAG  app.tar.gz
-app_size=$(stat -f%p app.tar.gz)
-app_digest="sha256:$(shasum -a 256  app.tar.gz | cut -d " " -f1)"
+
+app_diff_id=$(cat app_manifest.json | jq -r '.layers[0].annotations["io.deis.oras.content.digest"]')
+app_size=$(cat app_manifest.json | jq -r '.layers[0].size')
+app_digest=$(cat app_manifest.json | jq -r '.layers[0].digest')
 
 ##
 # Demo Main Part: no docker required
