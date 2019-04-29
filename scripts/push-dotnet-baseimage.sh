@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -ex
+set -e
 
 if [ -z "$REGISTRY" ] 
     then
@@ -8,13 +8,13 @@ if [ -z "$REGISTRY" ]
         exit 1
 fi
 
-if [ -z "$DOCKER_USERNAME"]
+if [ -z "$DOCKER_USERNAME" ]
   then 
         echo ERROR: DOCKER_USERNAME not defined. 
         exit 1
 fi
 
-if [ -z "$DOCKER_PASSWORD"]
+if [ -z "$DOCKER_PASSWORD" ]
   then 
         echo ERROR: DOCKER_PASSWORD not defined. 
         exit 1
