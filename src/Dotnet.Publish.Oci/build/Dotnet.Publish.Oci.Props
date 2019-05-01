@@ -17,7 +17,10 @@
   <PropertyGroup>
     <TaskAssembly>$(MSBuildThisFileDirectory)..\tasks\netstandard2.0\Dotnet.Publish.Oci.dll</TaskAssembly>
     <OrasExe Condition="$(IsWindows)==true">$(MSBuildThisFileDirectory)..\tools\win-x64\oras.exe</OrasExe>
-    <OrasExe Condition="$(IsOSX)==true">$(MSBuildThisFileDirectory)..\tools\osx-x64\oras</OrasExe>
+      <!-- 
+         <OrasExe Condition="$(IsOSX)==true">$(MSBuildThisFileDirectory)..\tools\osx-x64\oras</OrasExe>
+       -->
+     <OrasExe Condition="$(IsOSX)==true">$(MSBuildThisFileDirectory)..\tools\darwin-x64\push-image.sh</OrasExe>
     <OrasExe Condition="$(IsLinux)==true">$(MSBuildThisFileDirectory)..\tools\linux-x64\oras</OrasExe>
   </PropertyGroup>
 

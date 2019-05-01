@@ -6,6 +6,10 @@ build :
 	cd src/Dotnet.Publish.Oci && \
 	dotnet pack
 
+target :
+	cd src/Dotnet.Publish.Oci && \
+	dotnet pack 
+
 uninstall :
 	-dotnet tool uninstall --global dotnet-start
 

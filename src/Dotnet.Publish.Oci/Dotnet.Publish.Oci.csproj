@@ -11,6 +11,7 @@
 
   <PropertyGroup>
     <Assets_Oras>binaries/oras</Assets_Oras>
+     <Assets_Oras_Scripts>../../scripts</Assets_Oras_Scripts>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,8 +24,9 @@
 <!--   
   <_Asset PackagePath="tools/win-x64/" Include="$(Assets_Oras)/win-x64/oras.exe" />
     <_Asset PackagePath="tools/osx-x64/" Include="$(Assets_Oras)/osx-x64/oras" />
-    <_Asset PackagePath="tools/linux-x64/" Include="$(Assets_Oras)/linux-x64/oras" /> 
+    <_Asset PackagePath="tools/linux-x64/" Include="$(Assets_Oras)/linux-x64/oras" />
 -->
+   <_Asset PackagePath="tools/darwin-x64/" Include="$(Assets_Oras_Scripts)/darwin-x64/push-image.sh" /> 
 
     <None Include="@(_Asset)" Pack="true" Visible="false" />
   </ItemGroup>
