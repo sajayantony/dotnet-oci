@@ -1,0 +1,26 @@
+<Project TreatAsLocalProperty="TaskAssembly">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <!-- Name of this file must match package ID. -->
+
+  <PropertyGroup>
+    <IsWindows Condition="'$(OS)' == 'Windows_NT'">true</IsWindows>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(MSBuildRuntimeType)' == 'Core'">
+    <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
+    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TaskAssembly>$(MSBuildThisFileDirectory)..\tasks\netstandard2.0\Cautious.Enigma.dll</TaskAssembly>
+    <OrasExe Condition="$(IsWindows)==true">$(MSBuildThisFileDirectory)..\tools\win-x64\oras.exe</OrasExe>
+    <OrasExe Condition="$(IsOSX)==true">$(MSBuildThisFileDirectory)..\tools\osx-x64\oras</OrasExe>
+    <OrasExe Condition="$(IsLinux)==true">$(MSBuildThisFileDirectory)..\tools\linux-x64\oras</OrasExe>
+  </PropertyGroup>
+
+  <UsingTask TaskName="MSBuildTasks.OrasPush" AssemblyFile="$(TaskAssembly)" />
+
+</Project>
