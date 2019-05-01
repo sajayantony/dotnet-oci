@@ -1,4 +1,4 @@
-all : build uninstall install
+all : build uninstall install target
 
 build :
 	cd dotnet-start && \
@@ -18,7 +18,7 @@ install :
 	dotnet tool install --global --add-source ./nupkg/ dotnet-start
 
 sample :
-	cd samples/hw-preview-3 && \
+	cd samples/HelloWorld && \
 	dotnet publish
 
 push :
