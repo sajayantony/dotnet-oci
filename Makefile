@@ -14,7 +14,7 @@ install :
 	dotnet tool install --global --add-source ./nupkg/ dotnet-start
 
 sample :
-	cd samples/helloworld && \
+	cd samples/hw-preview-3 && \
 	dotnet publish
 
 push :
